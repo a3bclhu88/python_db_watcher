@@ -1,3 +1,6 @@
 {
-	"dashboar_task.select_pre-start_task":""
+	"dashboar_task.select_pre-start_task":{
+		"query":"select T.taskname as task_name, T.taskprogress as task_progress, TS.statusname as task_name,Ts.id as task_id,TCS.stagename as stage_name,E.binaryhost as binary_host,E.binarypath as binary_path, R.returncodevalue as success_return_code from dashboard_task as T join dashboard_taskstatus as TS on TS.id = T.taskstatus_id join dashboard_taskcurrentstage as TCS on TCS.id = T.taskcurrentstage_id join dashboard_executable as E on E.id = TCS.stageprogram_id join dashboard_returncode as R on R.id = E.codesuccess_id where Ts.id = 1",
+		"resultcolumns":["task_name","task_progress","status_name","task_id","stage_name","binary_host","binary_path","success_return_code"]
+	}
 }

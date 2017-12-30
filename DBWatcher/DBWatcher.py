@@ -7,6 +7,7 @@ import psycopg2
 import sys
 import json
 import os
+from psycopg2.psycopg1 import cursor
 
 class databaseconfig():
     js = open(os.path.join(os.path.dirname(__file__), './/config//config.json'),'r').read()
@@ -40,6 +41,24 @@ class databaseconfig():
         
 class databasequery():
     js = open(os.path.join(os.path.dirname(__file__), './/config//sqlmap.json'),'r').read()
-    print(js)
-        
+    print(js) 
     data = json.loads(js)
+    
+    def query_select_execution(self,cursor,query_name):
+        print(query_name)
+        query_task_detail_select = self.data[query_name]["query"]
+        cursor.execute(query_task_detail_select)
+        records = cursor.fetchall()
+        print(records)
+        query_colomn = self.data[query_name]["resultcolumns"]
+        
+        resultset = []
+        for record in records:
+            dict_record = {}
+            i = 0
+            for column in query_colomn:
+                dict_record[column] = record[i]
+                i += 1
+            resultset.append(dict_record)
+        
+        return(resultset)
