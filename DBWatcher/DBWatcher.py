@@ -85,4 +85,11 @@ class databasequery():
             resultset.append(dict_record)
         
         #return final query result set
+        print(resultset)
         return(resultset)
+    
+    def query_update_execution(self,cursor,query_name):
+        print(query_name)
+        
+        #extract query statement from Json config
+        query_task_detail_select = self.data[query_name]["query"]
