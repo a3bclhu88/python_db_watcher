@@ -60,11 +60,25 @@ class databasequery():
     data = json.loads(js)
     
     #function for executing select query, taking a cursor as base from databaseconfig class and string query name return a list as result set
-    def query_select_execution(self,cursor,query_name):
+    def query_select_execution(self,cursor,query_name,condition):
         print(query_name)
         
         #extract query statement from Json config
         query_task_detail_select = self.data[query_name]["query"]
+        
+        #extract conditions for where clause of the query from JSON config
+        if len(self.data[query_name]["condition"])!=0:
+            query_task_detail_select += " where "
+            i = 0
+            for con in self.data[query_name]["condition"]:
+                query_task_detail_select += con
+                query_task_detail_select += condition[i]
+                i += 1
+                
+                #if more than one condition exist, add 'and' for connecting them together
+                if i < len(self.data[query_name]["condition"])-1:
+                    query_task_detail_select += " and "
+                print(query_task_detail_select)
         
         #executing query into result set
         cursor.execute(query_task_detail_select)
@@ -88,8 +102,29 @@ class databasequery():
         print(resultset)
         return(resultset)
     
-    def query_update_execution(self,cursor,query_name):
+    def query_update_execution(self,cursor,query_name,values,condition):
         print(query_name)
         
         #extract query statement from Json config
-        query_task_detail_select = self.data[query_name]["query"]
+        query_task_detail_update = self.data[query_name]["query"]
+        
+        #extract set column and value from Json config
+        i = 0
+        for column in self.data[query_name]["resultcolumns"]:
+            query_task_detail_update += column + " = " + values[i]
+            if i < len(self.data[query_name]["resultcolumns"]) - 1:
+                query_task_detail_update + ", "
+        
+        if len(self.data[query_name]["condition"])!=0:
+            query_task_detail_update += " where "
+            i = 0
+            for con in self.data[query_name]["condition"]:
+                query_task_detail_update += con
+                query_task_detail_update += condition[i]
+                i += 1
+                
+                #if more than one condition exist, add 'and' for connecting them together
+                if i < len(self.data[query_name]["condition"])-1:
+                    query_task_detail_update += " and "
+        print(query_task_detail_update)
+        cursor.execute(query_task_detail_update)
