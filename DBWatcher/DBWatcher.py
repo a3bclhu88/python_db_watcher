@@ -73,11 +73,11 @@ class databasequery():
             for con in self.data[query_name]["condition"]:
                 query_task_detail_select += con
                 query_task_detail_select += condition[i]
-                i += 1
                 
                 #if more than one condition exist, add 'and' for connecting them together
                 if i < len(self.data[query_name]["condition"])-1:
                     query_task_detail_select += " and "
+                i += 1
                 print(query_task_detail_select)
         
         #executing query into result set
@@ -94,8 +94,10 @@ class databasequery():
             dict_record = {}
             i = 0
             for column in query_colomn:
+                #print(str(i) + column + " column value is " + str(record[i]))
                 dict_record[column] = record[i]
                 i += 1
+                print(dict_record)
             resultset.append(dict_record)
         
         #return final query result set
@@ -121,10 +123,10 @@ class databasequery():
             for con in self.data[query_name]["condition"]:
                 query_task_detail_update += con
                 query_task_detail_update += condition[i]
-                i += 1
                 
                 #if more than one condition exist, add 'and' for connecting them together
                 if i < len(self.data[query_name]["condition"])-1:
                     query_task_detail_update += " and "
+                i += 1
         print(query_task_detail_update)
         cursor.execute(query_task_detail_update)
