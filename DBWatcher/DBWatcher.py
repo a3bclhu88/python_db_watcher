@@ -97,13 +97,13 @@ class databasequery():
                 #print(str(i) + column + " column value is " + str(record[i]))
                 dict_record[column] = record[i]
                 i += 1
-                print(dict_record)
             resultset.append(dict_record)
         
         #return final query result set
         print(resultset)
         return(resultset)
     
+    #update statement
     def query_update_execution(self,cursor,query_name,values,condition):
         print(query_name)
         
@@ -130,3 +130,12 @@ class databasequery():
                 i += 1
         print(query_task_detail_update)
         cursor.execute(query_task_detail_update)
+    
+    #insert statement
+    def query_insert_execution(self,cursor,query_name,values):
+        
+        #get query body from json config
+        query_action_insert = self.data[query_name]["query"] + " ( " + values + " )"
+        print(query_action_insert)
+        cursor.execute(query_action_insert)
+        
